@@ -1,5 +1,6 @@
 # codecave-hook
 developer : Seemo/byte2mov
+discord : bytemov
 credits : fiz for keyauth download idea, zer0condition for ImGui Styling Color.
 codecave hook reverse engineering toolkit.
 
