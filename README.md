@@ -5,8 +5,7 @@ codecave hook reverse engineering toolkit.
 
 **codecave hook is a reverse engineering toolkit i made to make my life easier which soon expanded into full blown bypasses of loaders.**
 
-**Built in DLL dumper**
-**Built in Driver Dumper**
+**Built in DLL dumper** **Built in Driver Dumper**
 **Built In Debugger hooking and bypass**
 **Built in Process Searching Bypass**
 **Built in KeyAuth Download Finder**
