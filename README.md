@@ -1,4 +1,6 @@
 # codecave-hook
+developer : Seemo/byte2mov
+credits : fiz for keyauth download idea, zer0condition for ImGui Styling Color.
 codecave hook reverse engineering toolkit.
 
 **codecave hook is a reverse engineering toolkit i made to make my life easier which soon expanded into full blown bypasses of loaders.**
@@ -27,5 +29,5 @@ it relies on detour hooks, minhook whilst also being able to read and write memo
 
 **NOTE: You cannot use memory writing or reading after placing a detour hook, this needs to be fixed, you can simply set your memory patches before detouring.**
 
-
-
+Showcase : 
+https://streamable.com/zuex15
