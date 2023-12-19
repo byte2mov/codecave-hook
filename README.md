@@ -36,6 +36,8 @@ codecave hook reverse engineering toolkit.
 
 **Memory Fill with Nops.**
 
+**Keyauth Bypass Via nopping success method RVA**
+
 **How?**
 
 well codecave is mostly relient on detouring functions to do what you want, for example i hooked WriteProcessMemory to dump Process Hollowing which can also be used for dumping DLL
