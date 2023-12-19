@@ -30,4 +30,10 @@ it relies on detour hooks, minhook whilst also being able to read and write memo
 **NOTE: You cannot use memory writing or reading after placing a detour hook, this needs to be fixed, you can simply set your memory patches before detouring.**
 
 Showcase : 
-https://streamable.com/zuex15
+
+
+
+https://github.com/byte2mov/codecave-hook/assets/146471523/942e0f2d-5c05-42b6-ab96-7e2766cea81a
+
+
+
