@@ -181,6 +181,10 @@ void rendermenu()
     {
         hooks->dump_drivers();
     }
+    if (ImGui::Button("Dump LoadLibrary"))
+    {
+        hooks->LoadLibrary_hook();
+    }
     ImGui::Separator();
 
     ImGui::Text("Memory:");
@@ -365,5 +369,3 @@ DWORD WINAPI RenderThread([[maybe_unused]] LPVOID lpParameter)
 
     return 0;
 }
-
-
