@@ -45,6 +45,10 @@ using License_t = void (KeyAuth::api::*)(std::string);
 using CreateFileWFunc = HANDLE(WINAPI*)(LPCWSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
 using RemoveFunc = void(*)(void*, void*, const void*);
 typedef void(WINAPI* DebugBreakOriginal)(void);
+typedef HMODULE(WINAPI* LoadLibraryA_t)(LPCSTR);
+typedef HMODULE(WINAPI* LoadLibraryW_t)(LPCWSTR);
+typedef HMODULE(WINAPI* LoadLibraryExA_t)(LPCSTR, HANDLE, DWORD);
+typedef HMODULE(WINAPI* LoadLibraryExW_t)(LPCWSTR, HANDLE, DWORD);
 
 typedef HANDLE(WINAPI* CreateThread_t)(
     LPSECURITY_ATTRIBUTES lpThreadAttributes,
@@ -127,4 +131,5 @@ public:
     void hook_file_drop_remove();
     void debug_break();
     void threads();
+    void LoadLibrary_hook();
 }; static hooking* hooks = new hooking();
