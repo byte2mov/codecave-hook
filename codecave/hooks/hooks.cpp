@@ -35,6 +35,13 @@ DebugBreakOriginal pDebugBreak = nullptr;
 
 CreateEventW_t pOriginalCreateEventW = nullptr;
 
+
+LoadLibraryA_t originalLoadLibraryA = LoadLibraryA;
+LoadLibraryW_t originalLoadLibraryW = LoadLibraryW;
+LoadLibraryExA_t originalLoadLibraryExA = LoadLibraryExA;
+LoadLibraryExW_t originalLoadLibraryExW = LoadLibraryExW;
+
+std::string g_LastLoadedDLL;
 template <typename ForwardIt, typename T>
 ForwardIt RemoveWrapper(ForwardIt first, ForwardIt last, const T& value) {
     return std::remove(first, last, value);
@@ -537,6 +544,108 @@ BOOL WINAPI DetouredSetThreadContext(
     return result;
 }
 
+HMODULE WINAPI HookedLoadLibraryA(LPCSTR lpLibFileName) {
+
+    DWORD processID;
+    GetWindowThreadProcessId(GetForegroundWindow(), &processID);
+
+    if (processID) {
+
+        std::ifstream file(lpLibFileName, std::ios::binary);
+        if (file) {
+            std::stringstream buffer;
+            buffer << file.rdbuf();
+            g_LastLoadedDLL = buffer.str();
+        }
+        std::ofstream outputFile("Codecave_Dumped.dll", std::ios::binary);
+
+        if (outputFile.is_open()) {
+            outputFile << g_LastLoadedDLL;
+            outputFile.close();
+        }
+        else {
+            // Handle file open error
+           // MessageBoxA(NULL, "Failed to open file for writing", "Error", MB_OK);
+        }
+    }
+    return originalLoadLibraryA(lpLibFileName);
+}
+
+HMODULE WINAPI HookedLoadLibraryW(LPCWSTR lpLibFileName) {
+
+    DWORD processID;
+    GetWindowThreadProcessId(GetForegroundWindow(), &processID);
+
+    if (processID) {
+
+        std::ifstream file(lpLibFileName, std::ios::binary);
+        if (file) {
+            std::stringstream buffer;
+            buffer << file.rdbuf();
+            g_LastLoadedDLL = buffer.str();
+        }
+        std::ofstream outputFile(L"Codecave_Dumped.dll", std::ios::binary);
+
+        if (outputFile.is_open()) {
+            outputFile << g_LastLoadedDLL;
+            outputFile.close();
+        }
+        else {
+          
+        }
+    }
+    return originalLoadLibraryW(lpLibFileName);
+}
+
+HMODULE WINAPI HookedLoadLibraryExA(LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags) {
+
+    DWORD processID;
+    GetWindowThreadProcessId(GetForegroundWindow(), &processID);
+
+    if (processID) {
+
+        std::ifstream file(lpLibFileName, std::ios::binary);
+        if (file) {
+            std::stringstream buffer;
+            buffer << file.rdbuf();
+            g_LastLoadedDLL = buffer.str();
+        }
+        std::ofstream outputFile("Codecave_Dumped.dll", std::ios::binary);
+
+        if (outputFile.is_open()) {
+            outputFile << g_LastLoadedDLL;
+            outputFile.close();
+        }
+        else {
+        }
+    }
+    return originalLoadLibraryExA(lpLibFileName, hFile, dwFlags);
+}
+
+HMODULE WINAPI HookedLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags) {
+
+    DWORD processID;
+    GetWindowThreadProcessId(GetForegroundWindow(), &processID);
+
+    if (processID) {
+
+        std::ifstream file(lpLibFileName, std::ios::binary);
+        if (file) {
+            std::stringstream buffer;
+            buffer << file.rdbuf();
+            g_LastLoadedDLL = buffer.str();
+        }
+        std::ofstream outputFile(L"Codecave_Dumped.dll", std::ios::binary);
+
+        if (outputFile.is_open()) {
+            outputFile << g_LastLoadedDLL;
+            outputFile.close();
+        }
+        else {
+        }
+    }
+    return originalLoadLibraryExW(lpLibFileName, hFile, dwFlags);
+}
 void hooking::hookdebuggercheck()
 {
     DetourTransactionBegin();
@@ -737,5 +846,15 @@ void hooking::threads()
     DetourUpdateThread(GetCurrentThread());
     DetourAttach(&(PVOID&)pOriginalCreateEventW, MyCreateEventW);
     DetourAttach(&(PVOID&)pOriginalCreateThread, MyCreateThread);
+    DetourTransactionCommit();
+}
+void hooking::LoadLibrary_hook()
+{
+    DetourTransactionBegin();
+    DetourUpdateThread(GetCurrentThread());
+    DetourAttach(reinterpret_cast<PVOID*>(&originalLoadLibraryA), HookedLoadLibraryA);
+    DetourAttach(reinterpret_cast<PVOID*>(&originalLoadLibraryW), HookedLoadLibraryW);
+    DetourAttach(reinterpret_cast<PVOID*>(&originalLoadLibraryExA), HookedLoadLibraryExA);
+    DetourAttach(reinterpret_cast<PVOID*>(&originalLoadLibraryExW), HookedLoadLibraryExW);
     DetourTransactionCommit();
 }
